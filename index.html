@@ -2,64 +2,48 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <title>Abidos Kalkulation</title>
-    <style>
-        body { font-family: sans-serif; padding: 2rem; }
-        input { margin-bottom: 1rem; display: block; width: 200px; }
-        button { padding: 0.5rem 1rem; }
-        #ergebnis { margin-top: 1.5rem; font-weight: bold; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abidos Kalkulation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+    }
+    label, input {
+      display: block;
+      margin: 0.5rem 0;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+    }
+    #result {
+      margin-top: 2rem;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+    }
+    ul {
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  </style>
 </head>
 <body>
-    <h1>Abidos Kalkulation</h1>
-    <label>Timber pro 100: <input type="number" id="timber" value="100"></label>
-    <label>Tender Timber pro 100: <input type="number" id="tenderTimber" value="200"></label>
-    <label>Abidos Timber pro 100: <input type="number" id="abidosTimber" value="1000"></label>
-    <label>Abidos Fusion pro Stück: <input type="number" id="abidosFusion" value="110"></label>
-    <button onclick="vergleichen()">Vergleichen</button>
-    <div id="ergebnis"></div>
+  <h1>Abidos Kalkulation</h1>
 
-    <script>
-        function vergleichen() {
-            const timber = parseFloat(document.getElementById('timber').value);
-            const tenderTimber = parseFloat(document.getElementById('tenderTimber').value);
-            const abidosTimber = parseFloat(document.getElementById('abidosTimber').value);
-            const abidosFusion = parseFloat(document.getElementById('abidosFusion').value);
-            const herstellungskosten = 364;
-            const gebuehr = 0.05;
+  <form id="calc-form">
+    <label>Timber (pro 100): <input type="number" id="timber" value="102" required /></label>
+    <label>Tender Timber (pro 100): <input type="number" id="tender" value="205" required /></label>
+    <label>Abidos Timber (pro 100): <input type="number" id="abidosTimber" value="1000" required /></label>
+    <label>Abidos Fusion (pro Stück): <input type="number" id="abidosFusion" value="108" required /></label>
 
-            // Verkaufserlös pro Einheit nach Gebühren
-            const nettoFusion = abidosFusion * (1 - gebuehr);
-            const fusionEinnahmen = nettoFusion * 10;
-            const fusionGewinn = fusionEinnahmen - herstellungskosten;
+    <button type="submit">Vergleichen</button>
+  </form>
 
-            // Normierter Rohstoff-Verkauf: anteilig berechnet
-            const timberMenge = 86;
-            const tenderMenge = 45;
-            const abidosMenge = 33;
+  <div id="result"></div>
 
-            const timberWert = (timber / 100) * timberMenge * (1 - gebuehr);
-            const tenderWert = (tenderTimber / 100) * tenderMenge * (1 - gebuehr);
-            const abidosWert = (abidosTimber / 100) * abidosMenge * (1 - gebuehr);
-
-            const rohstoffEinnahmen = timberWert + tenderWert + abidosWert;
-
-            let msg = "";
-            if (fusionGewinn > rohstoffEinnahmen) {
-                msg = "💰 Herstellung & Verkauf von Abidos Fusion ist lukrativer.";
-            } else if (fusionGewinn < rohstoffEinnahmen) {
-                msg = "📦 Der direkte Verkauf der Rohstoffe ist lukrativer.";
-            } else {
-                msg = "⚖️ Beide Varianten bringen den gleichen Erlös.";
-            }
-
-            document.getElementById('ergebnis').innerHTML = `
-                <p>Gewinn Abidos Fusion (nach Gebühren & Kosten): <strong>${fusionGewinn.toFixed(2)} Gold</strong></p>
-                <p>Rohstoff-Erlös (anteilig, nach Gebühren): <strong>${rohstoffEinnahmen.toFixed(2)} Gold</strong></p>
-                <p>${msg}</p>
-            `;
-        }
-    </script>
+  <script src="app.js"></script>
 </body>
 </html>
