@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Abidos Kalkulation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Abidos Fusion Kalkulation</h1>
+
+    <section>
+      <h2>📌 Vergleich: Fusion vs. Rohstoffverkauf</h2>
+      <label>Verkaufspreis Abidos Fusion (pro Stück):
+        <input id="fusion-price" type="text" value="108">
+      </label><br>
+      <label>Timber Preis (pro 100):
+        <input id="timber-price" type="text" value="107">
+      </label><br>
+      <label>Tender Timber Preis (pro 100):
+        <input id="tender-price" type="text" value="209">
+      </label><br>
+      <label>Abidos Timber Preis (pro 100):
+        <input id="abidos-price" type="text" value="1400">
+      </label><br>
+      <label>Herstellungskosten (Gold für 10 Fusionen):
+        <input id="production-cost" type="text" value="364">
+      </label><br><br>
+      <button onclick="calculateComparison()">Berechnen</button>
+
+      <div id="vergleich-ergebnis" class="ergebnis"></div>
+    </section>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
