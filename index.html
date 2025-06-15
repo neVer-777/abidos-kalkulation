@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Abidos Kalkulation</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Abidos Kalkulation</h1>
+    <form id="calcForm">
+      <div class="input-group">
+        <label>Timber Preis pro 100:</label>
+        <input type="number" id="timberPrice" step="any" />
+      </div>
+      <div class="input-group">
+        <label>Tender Timber Preis pro 100:</label>
+        <input type="number" id="tenderPrice" step="any" />
+      </div>
+      <div class="input-group">
+        <label>Abidos Timber Preis pro 100:</label>
+        <input type="number" id="abidosPrice" step="any" />
+      </div>
+      <div class="input-group">
+        <label>Abidos Fusion Preis pro Stück:</label>
+        <input type="number" id="fusionPrice" step="any" />
+      </div>
+      <div class="input-group">
+        <label>Verfügbare Menge:</label>
+        <input type="number" id="availableAmount" step="1" />
+      </div>
+      <button type="submit">Vergleichen</button>
+    </form>
+    <div id="result"></div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
