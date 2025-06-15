@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="manifest" href="manifest.json">
+  <title>Abidos Kalkulation</title>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; max-width: 800px; margin: auto; background: #f9f9f9; }
+    label { display: block; margin-top: 1rem; font-weight: 500; }
+    input { width: 100%; padding: 0.6rem; font-size: 1rem; border-radius: 6px; border: 1px solid #ccc; margin-top: 0.3rem; box-sizing: border-box; }
+    button { margin-top: 1.5rem; padding: 0.8rem 1.2rem; font-size: 1rem; width: 100%; cursor: pointer; background-color: #1976d2; color: white; border: none; border-radius: 6px; }
+    .result { margin-top: 2rem; padding: 1rem; border: 1px solid #ccc; border-radius: 0.5rem; background: white; font-size: 0.95rem; }
+    .highlight { font-weight: bold; color: darkgreen; }
+    h1, h2 { margin-top: 2rem; font-size: 1.4rem; }
+    ul { padding-left: 1.2rem; }
+    .details li { margin-bottom: 0.5rem; }
+    @media (max-width: 600px) {
+      input, button { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Abidos Kalkulation</h1>
+
+  <h2>🧮 Vergleich: Herstellung vs. Rohstoffverkauf</h2>
+  <label>Preis pro 100 Timber (Gold):
+    <input type="number" onfocus="this.select()" id="priceTimber" value="107">
+  </label>
+  <label>Preis pro 100 Tender Timber (Gold):
+    <input type="number" onfocus="this.select()" id="priceTender" value="209">
+  </label>
+  <label>Preis pro 100 Abidos Timber (Gold):
+    <input type="number" onfocus="this.select()" id="priceAbidos" value="1400">
+  </label>
+  <label>Verkaufspreis pro Abidos Fusion (Gold):
+    <input type="number" onfocus="this.select()" id="fusionPrice" value="108">
+  </label>
+  <label>Herstellungskosten (gesamt in Gold):
+    <input type="number" onfocus="this.select()" id="craftCost" value="364">
+  </label>
+  <label>Anzahl hergestellter Abidos Fusion:
+    <input type="number" onfocus="this.select()" id="fusionAmount" value="10">
+  </label>
+  <button onclick="calculate()">Berechne Vergleich</button>
+  <div class="result" id="resultBox" style="display:none;"></div>
+
+  <h2>📦 Verkaufsrechnung des Lagerbestands</h2>
+  <label>Timber – Lagerbestand (Stück):
+    <input type="number" onfocus="this.select()" id="stockTimber">
+  </label>
+  <label>Tender Timber – Lagerbestand (Stück):
+    <input type="number" onfocus="this.select()" id="stockTender">
+  </label>
+  <label>Abidos Timber – Lagerbestand (Stück):
+    <input type="number" onfocus="this.select()" id="stockAbidos">
+  </label>
+  <label>Abidos Fusion – Lagerbestand (Stück):
+    <input type="number" onfocus="this.select()" id="stockFusion">
+  </label>
+  <button onclick="calculateStock()">Berechne Lagerverkauf</button>
+  <div class="result" id="stockResult" style="display:none;"></div>
+
+<script>
+function formatGold(value) {
+  return new Intl.NumberFormat('de-DE', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(value);
+}
+
+function calculate() {
+  const timberPrice = parseFloat(document.getElementById('priceTimber').value);
+  const tenderPrice = parseFloat(document.getElementById('priceTender').value);
+  const abidosPrice = parseFloat(document.getElementById('priceAbidos').value);
+  const fusionPrice = parseFloat(document.getElementById('priceFusion').value);
+  const craftCost = parseFloat(document.getElementById('craftCost').value);
+  const fusionAmount = parseInt(document.getElementById('fusionAmount').value);
+
+  const factor = fusionAmount / 10;
+  const timberUsed = 86 * factor;
+  const tenderUsed = 45 * factor;
+  const abidosUsed = 33 * factor;
+
+  const timberRaw = (timberUsed / 100) * timberPrice;
+  const tenderRaw = (tenderUsed / 100) * tenderPrice;
+  const abidosRaw = (abidosUsed / 100) * abidosPrice;
+  const rawTotal = timberRaw + tenderRaw + abidosRaw;
+  const rawNet = rawTotal * 0.95;
+
+  const fusionGross = fusionAmount * fusionPrice;
+  const fusionNet = (fusionGross * 0.95) - craftCost;
+  const diff = fusionNet - rawNet;
+
+  document.getElementById('resultBox').style.display = 'block';
+  document.getElementById('resultBox').innerHTML = `
+    <p><strong>🔎 Vergleichsergebnis:</strong></p>
+    <ul class="details">
+      <li>Rohstoffe für ${fusionAmount} Fusionen:</li>
+      <li>⤷ ${formatGold(timberUsed)} Timber = ${formatGold(timberRaw)} Gold</li>
+      <li>⤷ ${formatGold(tenderUsed)} Tender Timber = ${formatGold(tenderRaw)} Gold</li>
+      <li>⤷ ${formatGold(abidosUsed)} Abidos Timber = ${formatGold(abidosRaw)} Gold</li>
+      <li>Rohstofferlös netto (−5 %): <strong>${formatGold(rawNet)}</strong></li>
+      <li>Fusionserlös: ${formatGold(fusionGross)} ×0,95 − ${formatGold(craftCost)} = <strong>${formatGold(fusionNet)}</strong></li>
+      <li><strong>Differenz: ${formatGold(diff)} Gold</strong> → ${diff > 0 ? '✅ Herstellung lohnt sich!' : '❌ Rohstoffverkauf ist lukrativer!'}</li>
+    </ul>`;
+}
+
+function calculateStock() {
+  const timberStock = parseFloat(document.getElementById('stockTimber').value || 0);
+  const tenderStock = parseFloat(document.getElementById('stockTender').value || 0);
+  const abidosStock = parseFloat(document.getElementById('stockAbidos').value || 0);
+  const fusionStock = parseFloat(document.getElementById('stockFusion').value || 0);
+
+  const timberPrice = parseFloat(document.getElementById('priceTimber').value);
+  const tenderPrice = parseFloat(document.getElementById('priceTender').value);
+  const abidosPrice = parseFloat(document.getElementById('priceAbidos').value);
+  const fusionPrice = parseFloat(document.getElementById('priceFusion').value);
+
+  const timberGross = (timberStock / 100) * timberPrice;
+  const tenderGross = (tenderStock / 100) * tenderPrice;
+  const abidosGross = (abidosStock / 100) * abidosPrice;
+  const fusionGross = fusionStock * fusionPrice;
+
+  const timberNet = timberGross * 0.95;
+  const tenderNet = tenderGross * 0.95;
+  const abidosNet = abidosGross * 0.95;
+  const fusionNet = fusionGross * 0.95;
+  const totalNet = timberNet + tenderNet + abidosNet + fusionNet;
+
+  document.getElementById('stockResult').style.display = 'block';
+  document.getElementById('stockResult').innerHTML = `
+    <p><strong>📦 Verkaufsrechnung deines Bestands:</strong></p>
+    <ul class="details">
+      <li>Timber: ${formatGold(timberStock)} Stück → Netto: <strong>${formatGold(timberNet)}</strong></li>
+      <li>Tender Timber: ${formatGold(tenderStock)} Stück → Netto: <strong>${formatGold(tenderNet)}</strong></li>
+      <li>Abidos Timber: ${formatGold(abidosStock)} Stück → Netto: <strong>${formatGold(abidosNet)}</strong></li>
+      <li>Abidos Fusion: ${formatGold(fusionStock)} Stück → Netto: <strong>${formatGold(fusionNet)}</strong></li>
+    </ul>
+    <p><strong>💰 Gesamt-Nettoerlös: ${formatGold(totalNet)} Gold</strong></p>`;
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js');
+  });
+}
+</script>
+</body>
+</html>
