@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abidos Kalkulation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 1rem;
+      max-width: 600px;
+    }
+    label, input, select {
+      display: block;
+      margin: 0.5rem 0;
+      width: 100%;
+    }
+    input {
+      padding: 0.3rem;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.6rem;
+      width: 100%;
+    }
+    #result {
+      margin-top: 2rem;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+    }
+    .lang-switch {
+      float: right;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="title">Abidos Kalkulation</h1>
+  <select id="lang" class="lang-switch">
+    <option value="de">Deutsch</option>
+    <option value="en">English</option>
+  </select>
+
+  <form id="calc-form">
+    <label><span data-text="timberLabel">Timber (pro 100):</span> <input type="number" id="timber" value="102" required /></label>
+    <label><span data-text="tenderLabel">Tender Timber (pro 100):</span> <input type="number" id="tender" value="205" required /></label>
+    <label><span data-text="abidosLabel">Abidos Timber (pro 100):</span> <input type="number" id="abidosTimber" value="1000" required /></label>
+    <label><span data-text="fusionLabel">Abidos Fusion (pro Stück):</span> <input type="number" id="abidosFusion" value="108" required /></label>
+
+    <h3>Daten: Menge verfügbar</h3>
+    <label>Timber Haben: <input type="number" id="habenTimber" value="0" /></label>
+    <label>Tender Timber Haben: <input type="number" id="habenTender" value="0" /></label>
+    <label>Abidos Timber Haben: <input type="number" id="habenAbidos" value="0" /></label>
+    <label>Abidos Fusion Haben: <input type="number" id="habenFusion" value="0" /></label>
+
+    <h3>Verkaufsmenge (optional)</h3>
+    <label>Timber verkaufen: <input type="number" id="verkaufTimber" value="0" /></label>
+    <label>Tender Timber verkaufen: <input type="number" id="verkaufTender" value="0" /></label>
+    <label>Abidos Timber verkaufen: <input type="number" id="verkaufAbidos" value="0" /></label>
+    <label>Abidos Fusion verkaufen: <input type="number" id="verkaufFusion" value="0" /></label>
+
+    <button type="submit" data-text="compare">Vergleichen</button>
+  </form>
+
+  <div id="result"></div>
+  <script src="app.js"></script>
+</body>
+</html>
