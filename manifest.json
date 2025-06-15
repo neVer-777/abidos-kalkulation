@@ -1,0 +1,9 @@
+{
+  "name": "Abidos Kalkulation",
+  "short_name": "AbidosCalc",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f0f0f0",
+  "description": "Kalkulationstool zum Vergleich von Verkauf von Rohstoffen vs. Abidos Fusion",
+  "icons": []
+}
