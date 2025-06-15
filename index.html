@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Abidos Kalkulationstool</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0077cc" />
+  <link rel="icon" href="https://twemoji.maxcdn.com/v/14.0.2/svg/1f48e.svg" type="image/svg+xml" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 1rem;
+      margin: 0;
+      background: #f4f4f4;
+      color: #222;
+    }
+    h1 { text-align: center; }
+    input, select, button {
+      width: 100%;
+      padding: 0.6rem;
+      margin: 0.3rem 0;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .section {
+      background: #fff;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .results, .steps {
+      font-family: monospace;
+      white-space: pre-wrap;
+      background: #eef;
+      padding: 0.5rem;
+      border-radius: 6px;
+      margin-top: 0.5rem;
+    }
+    @media (min-width: 600px) {
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <h1>🌲 Abidos Kalkulationstool</h1>
+
+  <div class="section">
+    <h2>1. Vergleichskalkulation</h2>
+    <div class="grid">
+      <div>
+        <label>Abidos Fusion Preis (pro Stück)</label>
+        <input id="fusionPrice" type="text" />
+      </div>
+      <div>
+        <label>Herstellungskosten (Gold, z. B. 364 für 10)</label>
+        <input id="productionCost" type="text" />
+      </div>
+    </div>
+
+    <h3>Rohstoffpreise (pro 100 Stück)</h3>
+    <div class="grid">
+      <div><label>Timber</label><input id="timberPrice" type="text" /></div>
+      <div><label>Tender Timber</label><input id="tenderPrice" type="text" /></div>
+      <div><label>Abidos Timber</label><input id="abidosPrice" type="text" /></div>
+    </div>
+
+    <button onclick="calculateComparison()">Vergleich berechnen</button>
+    <div class="results" id="comparisonResult"></div>
+    <div class="steps" id="comparisonSteps"></div>
+  </div>
+
+  <div class="section">
+    <h2>2. Verkaufsrechnung des Bestands</h2>
+    <div class="grid">
+      <div><label>Timber (Menge)</label><input id="stockTimber" type="text" /></div>
+      <div><label>Preis Timber (pro 100)</label><input id="stockTimberPrice" type="text" /></div>
+      <div><label>Tender Timber (Menge)</label><input id="stockTender" type="text" /></div>
+      <div><label>Preis Tender Timber (pro 100)</label><input id="stockTenderPrice" type="text" /></div>
+      <div><label>Abidos Timber (Menge)</label><input id="stockAbidos" type="text" /></div>
+      <div><label>Preis Abidos Timber (pro 100)</label><input id="stockAbidosPrice" type="text" /></div>
+      <div><label>Abidos Fusion (Menge)</label><input id="stockFusion" type="text" /></div>
+      <div><label>Preis Abidos Fusion (pro Stück)</label><input id="stockFusionPrice" type="text" /></div>
+    </div>
+
+    <button onclick="calculateSales()">Verkaufswerte berechnen</button>
+    <div class="results" id="salesResult"></div>
+  </div>
+
+  <script>
+    const format = n => n.toLocaleString("de-DE", { minimumFractionDigits: 2 });
+
+    const get = id => {
+      const el = document.getElementById(id);
+      el.addEventListener("focus", () => el.select());
+      return parseFloat(el.value.replace(",", ".") || "0");
+    };
+
+    const saveInputs = () => {
+      document.querySelectorAll("input").forEach(i =>
+        localStorage.setItem(i.id, i.value)
+      );
+    };
+
+    const loadInputs = () => {
+      document.querySelectorAll("input").forEach(i => {
+        if (localStorage.getItem(i.id)) i.value = localStorage.getItem(i.id);
+      });
+    };
+
+    const calculateComparison = () => {
+      saveInputs();
+
+      let fusionPrice = get("fusionPrice");
+      let prodCost = get("productionCost");
+      let timber = get("timberPrice");
+      let tender = get("tenderPrice");
+      let abidos = get("abidosPrice");
+
+      let fusionCount = 10;
+
+      let grossFusion = fusionPrice * fusionCount;
+      let netFusion = grossFusion * 0.95;
+      let netFusionFinal = netFusion - prodCost;
+
+      let timberVal = (timber * 20 / 100) * 0.95;
+      let tenderVal = (tender * 10 / 100) * 0.95;
+      let abidosVal = (abidos * 5 / 100) * 0.95;
+      let netRaw = timberVal + tenderVal + abidosVal;
+
+      let diff = netFusionFinal - netRaw;
+
+      document.getElementById("comparisonResult").innerText =
+        diff > 0
+          ? `✅ Fusion ist lukrativer: +${format(diff)} Gold`
+          : `❌ Rohstoffverkauf ist lukrativer: +${format(-diff)} Gold`;
+
+      document.getElementById("comparisonSteps").innerText =
+        `Fusionserlös: ${format(grossFusion)} × 0,95 - ${format(prodCost)} = ${format(netFusionFinal)} Gold\n` +
+        `Rohstoffverkauf: Timber ${format(timberVal)}, Tender ${format(tenderVal)}, Abidos ${format(abidosVal)} = ${format(netRaw)} Gold`;
+    };
+
+    const calculateSales = () => {
+      saveInputs();
+
+      let data = [
+        { name: "Timber", qty: get("stockTimber"), price: get("stockTimberPrice"), per100: true },
+        { name: "Tender Timber", qty: get("stockTender"), price: get("stockTenderPrice"), per100: true },
+        { name: "Abidos Timber", qty: get("stockAbidos"), price: get("stockAbidosPrice"), per100: true },
+        { name: "Abidos Fusion", qty: get("stockFusion"), price: get("stockFusionPrice"), per100: false },
+      ];
+
+      let result = "";
+      let total = 0;
+
+      data.forEach(item => {
+        if (!item.qty || !item.price) return;
+        let gross = item.per100 ? (item.qty / 100) * item.price : item.qty * item.price;
+        let net = gross * 0.95;
+        total += net;
+        result += `${item.name}: Brutto ${format(gross)} → Netto ${format(net)} Gold\n`;
+      });
+
+      result += `\n💰 Gesamterlös: ${format(total)} Gold`;
+      document.getElementById("salesResult").innerText = result;
+    };
+
+    loadInputs();
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js').then(() => {
+        console.log("✅ Service Worker registriert");
+      });
+    }
+  </script>
+</body>
+</html>
