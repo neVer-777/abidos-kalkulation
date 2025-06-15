@@ -1,0 +1,44 @@
+
+body {
+  font-family: sans-serif;
+  padding: 1rem;
+}
+h1, h2 {
+  margin-bottom: 0.5rem;
+}
+input {
+  padding: 0.4rem;
+  margin: 0.3rem;
+  font-size: 1rem;
+}
+button {
+  padding: 0.6rem 1rem;
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+.icon {
+  width: 24px;
+  vertical-align: middle;
+  margin-right: 0.4rem;
+}
+table {
+  width: 100%;
+  margin-top: 1rem;
+  border-collapse: collapse;
+}
+td, th {
+  padding: 0.5rem;
+  text-align: left;
+}
+.ergebnis ul {
+  list-style: none;
+  padding-left: 0;
+}
+.ergebnis li {
+  margin-bottom: 0.5rem;
+}
+@media (max-width: 600px) {
+  input, button, td, th {
+    font-size: 1rem;
+  }
+}
