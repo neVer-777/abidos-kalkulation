@@ -1,1 +1,0 @@
-// JavaScript mit korrekter Vergleichslogik ohne Rohstoffpreise in Herstellkosten
