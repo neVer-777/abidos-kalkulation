@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Abidos Kalkulation</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="app.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Abidos Kalkulation</h1>
+    <div class="language-toggle">
+      <button id="deBtn">Deutsch</button>
+      <button id="enBtn">English</button>
+    </div>
+    <form id="calcForm">
+      <fieldset>
+        <legend>Preise (pro Charge/Einheit)</legend>
+        <label>Timber (100): <input type="number" id="priceTimber" value="107" /></label>
+        <label>Tender Timber (100): <input type="number" id="priceTenderTimber" value="209" /></label>
+        <label>Abidos Timber (100): <input type="number" id="priceAbidosTimber" value="1400" /></label>
+        <label>Abidos Fusion (1): <input type="number" id="priceFusion" value="108" /></label>
+      </fieldset>
+      <fieldset>
+        <legend>Verfügbare Menge (für Verkaufskalkulation)</legend>
+        <label>Timber: <input type="number" id="amountTimber" value="0" /></label>
+        <label>Tender Timber: <input type="number" id="amountTenderTimber" value="0" /></label>
+        <label>Abidos Timber: <input type="number" id="amountAbidosTimber" value="0" /></label>
+        <label>Abidos Fusion: <input type="number" id="amountFusion" value="0" /></label>
+      </fieldset>
+      <button type="submit">Vergleichen</button>
+    </form>
+    <div id="results"></div>
+  </div>
+</body>
+</html>
