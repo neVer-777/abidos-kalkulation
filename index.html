@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#1a202c"/>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Abidos Kalkulation</title>
+</head>
+<body>
+  <div id="app">
+    <h1>Abidos Kalkulation</h1>
+    <div id="language-switcher">
+      <button onclick="setLanguage('de')">Deutsch</button>
+      <button onclick="setLanguage('en')">English</button>
+    </div>
+    <div id="input-section">
+      <h2 class="lang" data-lang-de="Preise pro Charge (100 Stück)" data-lang-en="Prices per Batch (100 units)">Preise pro Charge (100 Stück)</h2>
+      <label>Timber: <input id="timberPrice" type="number" /></label>
+      <label>Tender Timber: <input id="tenderPrice" type="number" /></label>
+      <label>Abidos Timber: <input id="abidosPrice" type="number" /></label>
+      <label>Abidos Fusion (Stückpreis): <input id="fusionPrice" type="number" /></label>
+    </div>
+    <div id="stock-section">
+      <h2 class="lang" data-lang-de="Verfügbare Mengen zum Verkauf" data-lang-en="Available Quantities for Sale">Verfügbare Mengen zum Verkauf</h2>
+      <label>Timber: <input id="timberStock" type="number" /></label>
+      <label>Tender Timber: <input id="tenderStock" type="number" /></label>
+      <label>Abidos Timber: <input id="abidosStock" type="number" /></label>
+      <label>Abidos Fusion: <input id="fusionStock" type="number" /></label>
+    </div>
+    <button onclick="calculate()" class="lang" data-lang-de="Berechnen" data-lang-en="Calculate">Berechnen</button>
+    <div id="results"></div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
